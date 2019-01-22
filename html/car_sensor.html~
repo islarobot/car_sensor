@@ -168,7 +168,7 @@
         		x_image:0,
         		y_image:0,
         		w_square:1000,
-        		h_square:800,
+        		h_square:1000,
         		image_size_w:230,
         		image_size_h:500,
         		
@@ -192,6 +192,7 @@
 
        
             var socket = io.connect("localhost:8080"); 
+            
             /*Initializing the connection with the server via websockets */
             
 				//recibo mensajes del servidor!!!            
@@ -199,11 +200,13 @@
             
             socket.on("stream",function(message){  
                
-					console.log('---> 8 ----> '+message)
+					//console.log('---> 8 ----> '+message)
 	                msg_in = JSON.parse(message);
-                
-					//draw_sector_value(ctx,100,msg_in.sensor,100,msg_in.valor,values_items);
-
+                //console.log(values_items)
+					
+					
+					draw_sector_value(ctx,msg_in.sensor,msg_in.valor,values_items);
+					draw_car(ctx, values_items);
 					
 					document.getElementById("content1").innerHTML = message.value_number;					
 					

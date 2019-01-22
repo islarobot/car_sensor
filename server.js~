@@ -30,11 +30,11 @@ io.on('connection', function(socket) {
 	connection_stablished_http = 1;
     //socket.emit('announcements', { message: 'A new user has joined!' });
 
-		//console.log("Cliente conectado "+global_socket_http);
+		console.log("Cliente conectado "+global_socket_http);
 /////// RECIBO DE HTML
 
     socket.on('event', function(data) {
-        console.log('--> 1 --> ', data);
+        //console.log('--> 1 --> ', data);
 
         if (connection_stablished_ipc==1) {
 			ipc.server.emit(global_socket_ipc,'message',data);
@@ -66,7 +66,7 @@ connection_stablished_ipc = 1;
 
 ipc.server.on('message',function(data){
 	
-console.log('---> 7 ----> '+data);
+//console.log('---> 7 ----> '+data);
  if (connection_stablished_http==1) {
     global_socket_http.emit('stream', data);
 }
