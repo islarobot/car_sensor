@@ -17,8 +17,8 @@ var f = -1000*(c-a);
 var g = f.toFixed(0);
 
 var p = g%360;
-valor = Math.abs(Math.sin(p*3.1416/180)*50);
-sensor = Math.floor(Math.random() * 6)
+valor = Math.abs(Math.sin(p*3.1416/180)*60);
+sensor = 0
 console.log(valor)
 if (sensor == 0) {
 

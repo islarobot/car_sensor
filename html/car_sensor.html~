@@ -7,14 +7,8 @@
 
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> 
         
-        <script>
-        
-        
-			   
-			   
-        
-        
-        </script>
+		<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
+		<script src="../node_modules/tone/build/Tone.js"></script>
     </head>
     
         <style>
@@ -206,7 +200,8 @@
 					
 					
 					draw_sector_value(ctx,msg_in.sensor,msg_in.valor,values_items);
-					draw_car(ctx, values_items);
+					play_tone(msg_in.valor,values_items);
+					//draw_car(ctx, values_items);
 					
 					document.getElementById("content1").innerHTML = message.value_number;					
 					
