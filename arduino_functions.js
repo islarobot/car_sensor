@@ -5,11 +5,29 @@ module.exports = {
 
 generate_random_values: function () {
 
-valor = Math.floor(Math.random() * 50);
+var d = new Date();
+var n = d.getTime();
 
+var a = n/100000;
+var c = Math.floor(a);
+
+//console.log(angle)
+
+var f = -1000*(c-a);
+var g = f.toFixed(0);
+
+var p = g%360;
+valor = Math.abs(Math.sin(p*3.1416/180)*50);
 sensor = Math.floor(Math.random() * 6)
+console.log(valor)
+if (sensor == 0) {
 
 return JSON.stringify({sensor:sensor,valor:valor});
+}else {
+	valor = 0;
+	return JSON.stringify({sensor:sensor,valor:valor});
+	}
+
 },
 
   generate_amplitude_function: function (datos) {
