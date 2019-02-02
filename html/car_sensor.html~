@@ -200,7 +200,7 @@
 					
 					
 					draw_sector_value(ctx,msg_in.sensor,msg_in.valor,values_items);
-					play_tone(msg_in.valor,values_items);
+					//play_tone(msg_in.valor,values_items);
 					//draw_car(ctx, values_items);
 					
 					document.getElementById("content1").innerHTML = message.value_number;					

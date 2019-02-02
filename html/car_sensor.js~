@@ -4,8 +4,9 @@
 
 function play_tone(scale,vl) {
 
+var tone_val;
 
-var osc = new Tone.Oscillator(660, "sine").toMaster().start();
+var osc = new Tone.Oscillator(tone_val, "sine").toMaster().start();
 
 setTimeout(function(){
 
