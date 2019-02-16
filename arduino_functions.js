@@ -1,45 +1,47 @@
 //arduino functions
+function zeroFill( number, width )
+{
+  width -= number.toString().length;
+  if ( width > 0 )
+  {
+    return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+  }
+  return number + ""; // always return a string
+}
+
+function regla_de_tres(input,min_in,max_in,min_out,max_out) {
+
+var output = (input - min_in) * (max_out - min_out) / (max_in - min_in) + min_out;
+
+
+
+if (input < min_in || input > max_in) {
+	output = -1;
+}
+
+return parseInt(output);
+
+}
 
 
 module.exports = {
-
-generate_random_values: function () {
-
-var d = new Date();
-var n = d.getTime();
-
-var a = n/100000;
-var c = Math.floor(a);
-
-//console.log(angle)
-
-var f = -1000*(c-a);
-var g = f.toFixed(0);
-
-var p = g%360;
-valor = Math.abs(Math.sin(p*3.1416/180)*60);
-sensor = 0
-console.log(valor)
-if (sensor == 0) {
-
-return JSON.stringify({sensor:sensor,valor:valor});
-}else {
-	valor = 0;
-	return JSON.stringify({sensor:sensor,valor:valor});
-	}
-
-},
-
   generate_amplitude_function: function (datos) {
     
-degree = JSON.parse(datos).inputAngle;
-direccion = JSON.parse(datos).inputDirection;  
-    
-  var rad = degree*3.1416/180
+var param = datos.substr(0,2);
+
+var larg = datos.length-1;
+var prim = datos.indexOf('_');
+var seg = datos.indexOf('_',prim+1);
+var ter = datos.indexOf('_',seg+1);
+
+var angulo = datos.substr(prim+1,seg-prim-1);
+var direccion = datos.substr(seg+1,ter-seg-1);
+
+ var rad = angulo*3.1416/180
   
-  var value = 10*Math.sin(30*rad).toFixed(2)+10;
-    
-  return JSON.stringify({angle:degree,direccion:direccion,data:value});
+ var value = Math.abs(50*Math.sin(rad).toFixed(2));
+ 
+ return param+'_'+angulo+'_'+direccion+'_'+value+'_\n';
     
   },
 
@@ -49,35 +51,79 @@ direccion = JSON.parse(datos).inputDirection;
 funcion_conversion_node_ardu: function(data)
 {
 
+
+
 data_object = JSON.parse(data);
 
-//console.log("ssss")
-//console.log(data_object.inputAngle)
+/// bytes: 1 para el parametro. 2 para el angulo+direccion 1 para el valor 0-100 
 
-var output;
+// P000l999
 
-if (data_object.mode == 'data') {
+var param_string = data_object.inputParam;
 
-output = {inputAngle:data_object.inputAngle,inputDirection:data_object.inputDirection};
-	
+//var param_code = String.fromCharCode(param_string);
+
+var angle_string = data_object.inputAngle;
+
+var angle_int = parseInt(angle_string);
+
+var sign1 ='';
+
+if (angle_int<0) {
+	sign1 = 'p';
+}else {
+	sign1 = 'n';
 }
 
-return JSON.stringify(output);
+
+var angle_int_abs = Math.abs(angle_int);
+
+var angle_out = zeroFill(angle_int_abs,3);
+
+//console.log(angle_out);
+
+var output = param_string+sign1+angle_out;
+
+//console.log(output);
+
+
+return output;
 
 },
 
 
 
-
-
-funcion_conversion_ardu_node: function(data,mode,param)
+funcion_conversion_ardu_node: function(datos)
 {
 
-data_a = JSON.parse(data);
+//console.log('Datos: '+datos);
+//console.log('Length: '+datos.length)
 
-var output = {mode:mode,inputParam:param,outputParam:param,inputAngle:data_a.angle,inputDirection:data_a.direccion,outputValue:data_a.data};
+var param = datos.substr(0,1);
+
+var valor = datos.substr(1,4);
+
+var valor_int = parseInt(valor);
+
+var valor_int_escalado = regla_de_tres(valor_int,200,3000,50,0);
+
+//console.log(valor_int_escalado);
+
+var output = {sensor:param,valor:valor_int_escalado};
 
 var output_JSON = JSON.stringify(output);
+
+//console.log(valor_int);
+
+//if (valor_int == 9999) {var output_JSON = 'NA';}
+
+if (datos.length != 7 || valor_int_escalado == -1) {
+	
+var output_JSON = 'NA';
+}
+
+
+//console.log(output_JSON);
 
 return output_JSON;
 

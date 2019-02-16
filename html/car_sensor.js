@@ -53,15 +53,19 @@ function draw_sector_value(ctx,sector,value_color,vl) {
 //play a middle 'C' for the duration of an 8th note
 
 
-//beep(1);
+var sector_int = parseInt(sector);
+
+console.log(sector);
 console.log(value_color);
+
+
 	var centerX = vl.w_square / 2;
 	var centerY = vl.h_square / 2;
 	
 	//degree to rad
 
 
-	switch(sector) {
+	switch(sector_int) {
   case 0:	
   
   		start_a = 250;
